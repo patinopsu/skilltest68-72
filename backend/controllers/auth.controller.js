@@ -27,7 +27,8 @@ exports.login = async (req, res, next) => {
 
     // 1) ค้นผู้ใช้จากอีเมล (ต้องดึง password_hash มาด้วย เพื่อตรวจรหัสผ่าน)
     const user = await db("users")
-      .select("id", "name_th", "email", "role", "password_hash")
+      .select("users.id", "users.name_th", "users.email", "roles.name as role", "password_hash")
+      .leftJoin("roles", "users.role", "roles.id")
       .where({ email })
       .first();
 
@@ -47,7 +48,7 @@ exports.login = async (req, res, next) => {
 
     // 3) สร้าง JWT
     const token = jwt.sign(
-      { id: user.id, role: user.role, name: user.name_th }, // payload
+      { id: user.id, role: user.role, name: user.name_th, role: user.role }, // payload
       process.env.JWT_SECRET,                                // ความลับจาก .env
       { expiresIn: process.env.JWT_EXPIRES || "1h" }         // อายุโทเค็น
     );
