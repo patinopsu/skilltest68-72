@@ -1,7 +1,7 @@
 <!-- pages/upload.vue -->
 <script setup>
-definePageMeta({ layout: 'dashboard' })
-
+/* definePageMeta({ layout: 'dashboard' })
+ */
 import { ref, computed, watch, onMounted } from 'vue'
 import { useAuthStore } from '~/stores/auth'
 
