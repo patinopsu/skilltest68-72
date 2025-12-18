@@ -31,8 +31,9 @@ exports.list = async (req, res, next) => {
     // กรณี admin เห็นทั้งหมด
     if (req.user?.role === "admin") {
       const items = await db("users")
-        .select("id", "name_th", "email", "role", "created_at")
-        .orderBy("id", "desc");
+        .select("users.id", "users.name_th", "users.email", "roles.name_th as role", "users.created_at")
+        .leftJoin("roles", "users.role", "roles.id")
+        .orderBy("users.id");
       return res.json({ success: true, items, total: items.length });
     }
 
@@ -64,7 +65,8 @@ exports.list = async (req, res, next) => {
 exports.get = async (req, res, next) => {
   try {
     const row = await db("users")
-      .select("id", "name_th", "email", "role", "created_at")
+      .select("users.id", "users.name_th", "users.email", "roles.name_th as role", "users.created_at")
+      .leftJoin("roles", "users.role", "roles.id")
       .where({ id: req.params.id })
       .first();
 
@@ -241,8 +243,9 @@ exports.listServer = async (req, res, next) => {
 
     // 5) ดึงแถวเฉพาะหน้าที่ต้องการ (LIMIT/OFFSET + ORDER)
     const items = await db("users")
-      .select("id", "name_th", "email", "role", "created_at")
-      .whereRaw("CONCAT(id,' ',name_th,' ',email,' ',role) LIKE ?", [like])
+      .select("users.id", "users.name_th", "users.email", "roles.name_th as role", "users.created_at")
+      .leftJoin("roles", "users.role", "roles.id")
+      .whereRaw("CONCAT('users.id',' ',users.name_th,' ',users.email,' ',role) LIKE ?", [like])
       .orderBy(column, dir)
       .limit(itemsPerPage)
       .offset(off);
