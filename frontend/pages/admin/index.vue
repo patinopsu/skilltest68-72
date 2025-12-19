@@ -1,5 +1,4 @@
 <script setup>
-/* definePageMeta({ layout: 'default' }) */
 import { ref, onMounted, watch } from 'vue'
 import { useAuthStore } from '~/stores/auth'
 
