@@ -99,7 +99,7 @@
     </v-main>
 
     <v-footer app class="text-caption justify-center">
-      © {{ year }} VEC Skills
+      © {{ year }} Patin Muangjan
     </v-footer>
   </v-app>
 </template>
