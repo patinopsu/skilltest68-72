@@ -84,18 +84,6 @@ async function confirmDelete() {
   <div class="container mx-auto px-4 py-6">
     <div class="flex items-center justify-between mb-4 gap-3">
       <div class="flex items-center gap-3">
-        <NuxtLink to="/users/new">
-          <v-btn color="primary" variant="elevated">Create User</v-btn>
-        </NuxtLink>
-        <a href="http://localhost:7000/docs" target="_blank">
-          <v-btn variant="tonal">Open API Docs</v-btn>
-        </a>
-        <NuxtLink to="/upload">
-          <v-btn variant="tonal">Upload</v-btn>
-        </NuxtLink>
-      </div>
-
-      <div class="flex items-center gap-3">
         <v-text-field v-model="search" label="Search" density="comfortable" hide-details />
         <v-btn color="error" @click="logout">Logout</v-btn>
       </div>
