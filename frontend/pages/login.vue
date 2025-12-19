@@ -40,7 +40,7 @@
   </div>
 </template>
 <script setup>
-definePageMeta({ layout: 'auth-login', ssr: false })// ปิด SSR (ถ้าเปิดจะ error เพราะใช้ localStorage)
+definePageMeta({ layout: 'login', ssr: false })
 import { ref } from 'vue'
 import { useAuthStore } from '~/stores/auth'
 import { useForm, useField } from 'vee-validate'
