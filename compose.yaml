@@ -27,6 +27,7 @@ services:
     ports:
       - 3000:3000
     volumes:
+      - ./:/home/node/
       - ./frontend:/home/node/app
     command: ["npm", "run", "dev"]
   backend:

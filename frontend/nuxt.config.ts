@@ -1,42 +1,25 @@
-// // https://nuxt.com/docs/api/configuration/nuxt-config
-// import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
+import { execSync } from 'node:child_process'
+import path from 'node:path'
 
-// export default defineNuxtConfig({
-//   modules: ['@pinia/nuxt'],
-//   devtools: { enabled: false },
-//   runtimeConfig: {
-//     public: {
-//       // apiBase: process.env.NUXT_PUBLIC_API_BASE || 'http://localhost:7000'
-//        apiBase: process.env.NUXT_PUBLIC_API_BASE || 'http://localhost:7000'
-//     }
-//   },
-//   css: [
-//     'vuetify/styles',
-//     '~/assets/css/tailwind.css'
-//   ],
-//   build: {
-//     transpile: ['vuetify']
-//   },
-//   vite: {
-//     ssr: {
-//       noExternal: ['vuetify']
-//     },
-//     plugins: [
-//       vuetify({ autoImport: true })
-//     ],
-//     vue: {
-//       template: {
-//         transformAssetUrls
-//       }
-//     }
-//   }
-// })
+function getGitHash() {
+  try {
+    return execSync(
+      'git rev-parse --short HEAD',
+      {
+        cwd: path.resolve(__dirname, '..'),
+      }
+    )
+      .toString()
+      .trim()
+  } catch {
+    return 'unknown'
+  }
+}
 
-// nuxt.config.ts
 import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 
 export default defineNuxtConfig({
-   // ✅ ตั้งค่า compatibilityDate ตามที่ Nuxt เตือน
+
  nitro: {
     compatibilityDate: '2025-10-12', // 🔥 วันที่ตามที่ Nuxt แนะนำใน warning
   },
@@ -48,14 +31,15 @@ export default defineNuxtConfig({
   devtools: { enabled: false },
  runtimeConfig: {
     public: {
-      // apiBase: process.env.NUXT_PUBLIC_API_BASE || 'http://localhost:7000'
-       apiBase: process.env.NUXT_PUBLIC_API_BASE || 'http://localhost:7000'
+      apiBase: process.env.NUXT_PUBLIC_API_BASE || 'http://localhost:7000',
+      appVersion: process.env.npm_package_version,
+      gitHash: getGitHash(),
+
     }
   },
   // ✅ ย้าย PostCSS มาตั้งค่าที่นี่
   postcss: {
     plugins: {
-      'vuetify': {},
       '@tailwindcss/postcss': {},
       'autoprefixer': {},
     },
@@ -78,6 +62,6 @@ export default defineNuxtConfig({
     vue: { 
       template: { 
         transformAssetUrls 
-      }}
+      } }
   }
 })
