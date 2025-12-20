@@ -55,14 +55,13 @@ export default defineNuxtConfig({
   // ✅ ย้าย PostCSS มาตั้งค่าที่นี่
   postcss: {
     plugins: {
-      tailwindcss: {},
+      '@tailwindcss/postcss': {},
       autoprefixer: {},
     },
   },
   css: [
     'vuetify/styles',
     '@mdi/font/css/materialdesignicons.min.css', 
-    '~/assets/css/tailwind.css'
   ],
 
   build: { transpile: ['vuetify'] },
