@@ -1,14 +1,28 @@
 <template>
-  <v-app>
-    <v-main>
-      <v-container class="d-flex align-center justify-center" style="min-height: 100vh">
-        <v-card max-width="420" class="w-100">
-          <v-card-title class="text-h6 text-center">Personnel evaluation system</v-card-title>
-          <v-card-text>
-            <slot /> <!-- ฟอร์ม login ของเพจ -->
-          </v-card-text>
-        </v-card>
-      </v-container>
+  <v-app class="background">
+    <v-main class="d-flex align-center justify-center">
+      <div class="pr-16 text-center">
+        <img width="148px" src="@/assets/rms-icon.png">
+        <p class="text-h5">วิทยาลัยเทคนิคสมุทรปราการ</p>
+      </div>
+      <div>
+        <slot />
+        <p class="text-right">v{{ version }}-{{ git }}</p>
+      </div>
     </v-main>
   </v-app>
 </template>
+
+<style scoped>
+  .background {
+    background-image: url('@/assets/background.png');
+    background-size: cover;
+    background-position: center;
+  }
+</style>
+
+<script setup lang="ts">
+const config = useRuntimeConfig()
+const version = config.public.appVersion
+const git = config.public.gitHash
+</script>
