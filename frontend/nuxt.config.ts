@@ -55,19 +55,29 @@ export default defineNuxtConfig({
   // ✅ ย้าย PostCSS มาตั้งค่าที่นี่
   postcss: {
     plugins: {
+      'vuetify': {},
       '@tailwindcss/postcss': {},
-      autoprefixer: {},
+      'autoprefixer': {},
     },
   },
   css: [
-    'vuetify/styles',
     '@mdi/font/css/materialdesignicons.min.css', 
   ],
 
-  build: { transpile: ['vuetify'] },
+  build: { 
+    transpile: ['vuetify'] 
+  },
   vite: {
-    ssr: { noExternal: ['vuetify'] },
-    plugins: [vuetify({ autoImport: true })],
-    vue: { template: { transformAssetUrls } }
+    ssr: { 
+      noExternal: ['vuetify'] 
+    },
+    plugins: [
+      vuetify(
+        { autoImport: true 
+    })],
+    vue: { 
+      template: { 
+        transformAssetUrls 
+      }}
   }
 })
