@@ -45,7 +45,9 @@ export default defineNuxtConfig({
     },
   },
   css: [
-    '@mdi/font/css/materialdesignicons.min.css', 
+    'vuetify/styles',
+    '@mdi/font/css/materialdesignicons.min.css',
+    '~/assets/css/tailwind.css'
   ],
 
   build: { 

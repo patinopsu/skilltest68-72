@@ -4,19 +4,23 @@
     <!-- Drawer -->
     <v-navigation-drawer
       v-model="drawer"
-      :permanent="!smAndDown"
       :temporary="smAndDown"
+      :rail="!smAndDown"
+      :expand-on-hover="!smAndDown"
+      scrim="false"
       app
     >
+    
       <v-list density="compact" nav>
+        <v-list-item class="pt-1" :title="auth.user?.name || 'ไม่ระบุชื่อ'" :subtitle="auth.user?.email || '-'" prepend-icon="mdi-account"/>
         <template v-for="sec in menu" :key="sec.label">
-          <v-list-subheader class="text-uppercase text-caption">{{ sec.label }}</v-list-subheader>
-
+          <v-divider class="my-2" />
           <template v-for="it in sec.items" :key="it.to || it.href">
             <NuxtLink
               v-if="it.to"
               :to="it.to"
               class="no-underline"
+              color="surface"
               exact-active-class="rounded-lg"
             >
               <v-list-item :title="it.label">
@@ -25,79 +29,23 @@
                 </template>
               </v-list-item>
             </NuxtLink>
-
-            <a v-else :href="it.href" :target="it.target || '_blank'" class="no-underline">
-              <v-list-item :title="it.label">
-                <template #prepend>
-                  <v-icon :icon="it.icon || 'mdi-circle-small'" />
-                </template>
-              </v-list-item>
-            </a>
           </template>
-
-          <v-divider class="my-2" />
         </template>
       </v-list>
     </v-navigation-drawer>
-
-    <!-- App Bar -->
-    <v-app-bar app flat>
-      <v-app-bar-nav-icon @click="drawer = !drawer" aria-label="Toggle menu" />
-      <v-toolbar-title class="font-semibold">Personnel evaluation system</v-toolbar-title>
-
+    <v-app-bar>
+      <v-app-bar-nav-icon @click="drawer = !drawer" />
+      <v-toolbar-title class="font-semibold">ระบบประเมินบุคลากร</v-toolbar-title>
       <v-spacer />
-
       <v-btn icon @click="toggleTheme" :aria-label="`Switch to ${themeName === 'dark' ? 'light':'dark'} theme`">
         <v-icon>mdi-theme-light-dark</v-icon>
       </v-btn>
-
-      <!-- Profile -->
-      <!-- Profile -->
-<v-menu>
-  <template #activator="{ props }">
-    <v-btn v-bind="props" icon>
-      <v-avatar size="36">
-        <!-- ✅ แสดงรูปจริง ถ้ามี -->
-        <v-img
-          v-if="auth.user?.avatar_url"
-          :src="auth.user.avatar_url"
-          alt="User avatar"
-          cover
-        />
-        <!-- 🧩 fallback ถ้าไม่มีรูป -->
-        <span
-          v-else
-          class="font-semibold text-white bg-primary w-full h-full flex items-center justify-center"
-        >
-          {{ initials }}
-        </span>
-      </v-avatar>
-    </v-btn>
-  </template>
-
-  <v-list>
-    <v-list-item
-      :title="auth.user?.name || 'ไม่ระบุชื่อ'"
-      :subtitle="auth.user?.email || '-'"
-      prepend-icon="mdi-account"
-    />
-    <v-divider class="my-2" />
-    <NuxtLink to="/me" class="no-underline">
-      <v-list-item title="Profile" prepend-icon="mdi-account-cog-outline" />
-    </NuxtLink>
-    <v-list-item title="Logout" prepend-icon="mdi-logout" @click="logout" />
-  </v-list>
-</v-menu>
-
     </v-app-bar>
-
-    <!-- Content -->
-    <v-main class="bg-gray-50">
-      <div class="p-4 lg:p-6">
+    <v-main>
+      <div>
         <slot />
       </div>
     </v-main>
-
     <v-footer app class="text-caption justify-center">
       © {{ year }} Patin Muangjan
     </v-footer>
@@ -105,6 +53,7 @@
 </template>
 
 <script setup>
+definePageMeta({ ssr: false })
 import { ref, computed, watch, onMounted } from 'vue'
 import { useDisplay, useTheme } from 'vuetify'
 import { useAuthStore } from '~/stores/auth'
@@ -115,8 +64,7 @@ const { smAndDown } = useDisplay()
 const theme = useTheme()
 
 // Drawer responsive
-const drawer = ref(!smAndDown.value)
-watch(smAndDown, v => { drawer.value = !v })
+const drawer = ref(true)
 
 // Auth + role
 const auth = useAuthStore()

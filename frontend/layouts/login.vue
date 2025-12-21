@@ -1,9 +1,9 @@
 <template>
   <v-app class="background">
     <v-main class="d-flex align-center justify-center">
-      <div class="pr-16 text-center">
-        <img width="148px" src="@/assets/rms-icon.png">
-        <p class="text-h5">วิทยาลัยเทคนิคสมุทรปราการ</p>
+      <div class="pr-16">
+        <img width="148px" class="mx-auto d-block" src="@/assets/rms-icon.png">
+        <p class="text-h5 text-center">วิทยาลัยเทคนิคสมุทรปราการ</p>
       </div>
       <div>
         <slot />
@@ -12,15 +12,13 @@
     </v-main>
   </v-app>
 </template>
-
 <style scoped>
   .background {
     background-image: url('@/assets/background.png');
     background-size: cover;
     background-position: center;
-  }
+}
 </style>
-
 <script setup lang="ts">
 const config = useRuntimeConfig()
 const version = config.public.appVersion
