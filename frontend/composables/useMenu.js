@@ -14,7 +14,7 @@ const MAP = {
     {
       label: 'MAIN',
       items: [
-        { label: 'Dashboard', to: '/',              icon: 'mdi-view-dashboard-outline' },
+        { label: 'Dashboard', to: '/admin',              icon: 'mdi-view-dashboard-outline' },
         { label: 'Upload',    to: '/upload',        icon: 'mdi-tray-arrow-up' },
       ]
     },
