@@ -12,17 +12,15 @@ function normalizeRole(r) {
 const MAP = {
   admin: [
     {
-      label: 'MAIN',
       items: [
         { label: 'Dashboard', to: '/',              icon: 'mdi-view-dashboard-outline' },
         { label: 'Admin Panel', to: '/admin',       icon: 'mdi-format-superscript' },
-        { label: 'Upload',    to: '/upload',        icon: 'mdi-tray-arrow-up' },
+        /* { label: 'Upload',    to: '/upload',        icon: 'mdi-tray-arrow-up' }, */
       ]
     },
     {
-      label: 'MANAGEMENT',
       items: [
-        { label: 'Users',         to: '/users',            icon: 'mdi-account-cog-outline' },
+        { label: 'Users',         to: '/admin/users',            icon: 'mdi-account-cog-outline' },
         { label: 'Periods',       to: '/admin/periods',    icon: 'mdi-calendar-range' },
         { label: 'Topics',        to: '/admin/topics',     icon: 'mdi-format-list-bulleted' },
         { label: 'Assignments',   to: '/admin/assignments',icon: 'mdi-account-multiple-check' },
@@ -36,14 +34,12 @@ const MAP = {
 
   evaluator: [
     {
-      label: 'MAIN',
       items: [
         { label: 'Dashboard', to: '/',       icon: 'mdi-view-dashboard-outline' },
         { label: 'Upload',    to: '/upload', icon: 'mdi-tray-arrow-up' },
       ]
     },
     {
-      label: 'EVALUATION',
       items: [
         { label: 'Assigned Tasks',  to: '/eval/tasks',   icon: 'mdi-clipboard-check-outline' },
         { label: 'Scoring',         to: '/eval/scoring', icon: 'mdi-lead-pencil' },
@@ -56,14 +52,12 @@ const MAP = {
 
   user: [
     {
-      label: 'MAIN',
       items: [
         { label: 'Dashboard', to: '/',           icon: 'mdi-view-dashboard-outline' },
         { label: 'Upload',    to: '/upload',     icon: 'mdi-tray-arrow-up' }, // ✅ บังคับมีแน่
       ]
     },
     {
-      label: 'MY EVALUATION',
       items: [
         { label: 'Profile',         to: '/me',             icon: 'mdi-account' },
         { label: 'Indicators',      to: '/me/indicators',  icon: 'mdi-format-list-bulleted-square' },
