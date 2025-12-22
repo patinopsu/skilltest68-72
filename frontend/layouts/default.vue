@@ -64,7 +64,9 @@ const { smAndDown } = useDisplay()
 const theme = useTheme()
 
 // Drawer responsive
-const drawer = ref(true)
+const drawer = ref(false)
+const group = ref(null)
+drawer.value = false
 
 // Auth + role
 const auth = useAuthStore()
@@ -92,6 +94,7 @@ function applyTheme (name) {
   }
 }
 onMounted(() => {
+  drawer.value = true
   let saved = null
   try { saved = localStorage.getItem('theme') } catch {}
   themeName.value = saved || themeName.value
