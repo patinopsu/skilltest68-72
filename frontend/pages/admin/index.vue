@@ -47,10 +47,6 @@ async function load() {
 }
 
 onMounted(() => {
-  if (!auth.isLogged) {
-    router.push('/login')
-    return
-  }
   load()
 })
 watch(options, load, { deep: true })
