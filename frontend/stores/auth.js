@@ -1,5 +1,6 @@
 // ~/stores/auth.js
 import { defineStore } from 'pinia'
+import { useCommonStore } from './common'
 export const useAuthStore = defineStore('auth', {
   state: () => ({
     token: null,
@@ -30,11 +31,10 @@ export const useAuthStore = defineStore('auth', {
       this.token = null
       this.user  = null
       if (process.client) {
+        const common = useCommonStore()
         localStorage.removeItem('auth_token')
         localStorage.removeItem('auth_user')
-        navigateTo(' /login',{
-          external: true
-        })
+        common.approvedRedirect()
       }
     }
   }

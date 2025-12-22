@@ -38,12 +38,14 @@
 definePageMeta({ layout: 'login', ssr: false })
 import { ref } from 'vue'
 import { useAuthStore } from '~/stores/auth'
+import { useCommonStore } from '~/stores/common.js'
 import { useForm, useField } from 'vee-validate'
 import * as yup from 'yup'
 
 const { $api } = useNuxtApp()
 const router = useRouter()
 const auth = useAuthStore()
+const common = useCommonStore()
 
 const errorMsg = ref('')
 const showPw = ref(false)
@@ -66,7 +68,7 @@ const onSubmit = handleSubmit(async (values) => {
     const { data } = await $api.post('/api/auth/login', { ...values, remember: rememberMe.value })
     if (data?.accessToken) {
       auth.setAuth(data.accessToken, data.user)   // ← เก็บลง localStorage เรียบร้อย
-      await router.push('/')
+      common.approvedRedirect()
     } else {
       errorMsg.value = 'Invalid response'
     }
