@@ -3,6 +3,7 @@ import { ref, isRef, computed } from 'vue'
 
 // ถ้า backend ส่ง 'evaluatee' ให้ map มาเป็น 'user'
 function normalizeRole(r) {
+  console.log('Role reported by useMenu:', r)
   const x = (r || '').toString().toLowerCase()
   if (x === 'evaluatee') return 'user'
   return ['admin', 'evaluator', 'user'].includes(x) ? x : 'user'
