@@ -32,6 +32,9 @@ export const useAuthStore = defineStore('auth', {
       if (process.client) {
         localStorage.removeItem('auth_token')
         localStorage.removeItem('auth_user')
+        navigateTo(' /login',{
+          external: true
+        })
       }
     }
   }
