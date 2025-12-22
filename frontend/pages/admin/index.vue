@@ -2,8 +2,8 @@
   <div class="container mx-auto px-4 py-6">
     <div class="flex items-center justify-between mb-4 gap-3">
       <div class="flex items-center gap-3">
-        <v-text-field v-model="search" label="Search" density="comfortable" hide-details />
-        <v-btn color="error" @click="auth.logout()">Logout</v-btn>
+        <v-spacer/>
+        <v-text-field v-model="search" label="Search" density="comfortable" class="max-w-full" width="220" hide-details />
       </div>
     </div>
 
@@ -25,13 +25,14 @@
           :items-length="total"
           :items="items"
           :loading="loading"
+          :items-per-page-options="[10, 25, 50, 100]"
           :headers="[
             { title:'ID', key:'id' },
             { title:'Name', key:'name_th' },
             { title:'Email', key:'email' },
             { title:'Role', key:'role' },
             { title:'Created', key:'created_at' },
-            { title:'Actions', key:'actions', sortable:false }
+            { title:'Actions', key:'actions', sortable: false }
           ]"
           :sort-by="options.sortBy"
           @update:sort-by="(s) => options.sortBy = s"
@@ -135,7 +136,7 @@ function askDelete(user) {
 
 function formatDate(date) {
   if (!date) return '-'
-  return new Date(date).toLocaleString('th-TH', {
+  return new Date(date).toLocaleString('en-US', {
     dateStyle: 'medium',
     timeStyle: 'short',
   })
