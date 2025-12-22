@@ -1,3 +1,78 @@
+<template>
+  <div class="container mx-auto px-4 py-6">
+    <div class="flex items-center justify-between mb-4 gap-3">
+      <div class="flex items-center gap-3">
+        <v-text-field v-model="search" label="Search" density="comfortable" hide-details />
+        <v-btn color="error" @click="auth.logout()">Logout</v-btn>
+      </div>
+    </div>
+
+    <v-card>
+      <v-card-title class="text-lg">Users</v-card-title>
+      <v-card-text>
+        <v-alert
+          v-if="errorMsg"
+          type="error"
+          variant="tonal"
+          class="mb-3"
+        >
+          {{ errorMsg }}
+        </v-alert>
+
+        <v-data-table-server
+          v-model:items-per-page="options.itemsPerPage"
+          v-model:page="options.page"
+          :items-length="total"
+          :items="items"
+          :loading="loading"
+          :headers="[
+            { title:'ID', key:'id' },
+            { title:'Name', key:'name_th' },
+            { title:'Email', key:'email' },
+            { title:'Role', key:'role' },
+            { title:'Created', key:'created_at' },
+            { title:'Actions', key:'actions', sortable:false }
+          ]"
+          :sort-by="options.sortBy"
+          @update:sort-by="(s) => options.sortBy = s"
+        >
+          <template v-slot:item.created_at="{ item }">
+            {{ formatDate(item.created_at) }}
+          </template>
+          <template #item.actions="{ item }">
+            <NuxtLink :to="`/admin/users/${item.id}`">
+              <v-btn size="small" variant="text">Edit</v-btn>
+            </NuxtLink>
+            <v-btn
+              size="small"
+              color="error"
+              variant="text"
+              @click="askDelete(item)"
+            >
+              Delete
+            </v-btn>
+            
+          </template>
+        </v-data-table-server>
+      </v-card-text>
+    </v-card>
+
+    <!-- ✅ Dialog Confirm Delete -->
+    <v-dialog v-model="confirmDialog" max-width="400">
+      <v-card>
+        <v-card-title class="text-h6">Confirm Delete</v-card-title>
+        <v-card-text>
+          Delete user <strong>#{{ selectedUser?.id }}</strong> ({{ selectedUser?.name_th }}) ?
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn variant="text" @click="confirmDialog = false">Cancel</v-btn>
+          <v-btn color="error" variant="flat" @click="confirmDelete">Delete</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </div>
+</template>
 <script setup>
 import { ref, onMounted, watch } from 'vue'
 import { useAuthStore } from '~/stores/auth'
@@ -58,6 +133,14 @@ function askDelete(user) {
   confirmDialog.value = true
 }
 
+function formatDate(date) {
+  if (!date) return '-'
+  return new Date(date).toLocaleString('th-TH', {
+    dateStyle: 'medium',
+    timeStyle: 'short',
+  })
+}
+
 /* ✅ เมื่อกดยืนยันใน dialog */
 async function confirmDelete() {
   try {
@@ -70,75 +153,3 @@ async function confirmDelete() {
   }
 }
 </script>
-
-<template>
-  <div class="container mx-auto px-4 py-6">
-    <div class="flex items-center justify-between mb-4 gap-3">
-      <div class="flex items-center gap-3">
-        <v-text-field v-model="search" label="Search" density="comfortable" hide-details />
-        <v-btn color="error" @click="auth.logout()">Logout</v-btn>
-      </div>
-    </div>
-
-    <v-card>
-      <v-card-title class="text-lg">Users</v-card-title>
-      <v-card-text>
-        <v-alert
-          v-if="errorMsg"
-          type="error"
-          variant="tonal"
-          class="mb-3"
-        >
-          {{ errorMsg }}
-        </v-alert>
-
-        <v-data-table-server
-          v-model:items-per-page="options.itemsPerPage"
-          v-model:page="options.page"
-          :items-length="total"
-          :items="items"
-          :loading="loading"
-          :headers="[
-            { title:'ID', key:'id' },
-            { title:'Name', key:'name_th' },
-            { title:'Email', key:'email' },
-            { title:'Role', key:'role' },
-            { title:'Created', key:'created_at' },
-            { title:'Actions', key:'actions', sortable:false }
-          ]"
-          :sort-by="options.sortBy"
-          @update:sort-by="(s) => options.sortBy = s"
-        >
-          <template #item.actions="{ item }">
-            <NuxtLink :to="`/users/${item.id}`">
-              <v-btn size="small" variant="text">Edit</v-btn>
-            </NuxtLink>
-            <v-btn
-              size="small"
-              color="error"
-              variant="text"
-              @click="askDelete(item)"
-            >
-              Delete
-            </v-btn>
-          </template>
-        </v-data-table-server>
-      </v-card-text>
-    </v-card>
-
-    <!-- ✅ Dialog Confirm Delete -->
-    <v-dialog v-model="confirmDialog" max-width="400">
-      <v-card>
-        <v-card-title class="text-h6">Confirm Delete</v-card-title>
-        <v-card-text>
-          Delete user <strong>#{{ selectedUser?.id }}</strong> ({{ selectedUser?.name_th }}) ?
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer />
-          <v-btn variant="text" @click="confirmDialog = false">Cancel</v-btn>
-          <v-btn color="error" variant="flat" @click="confirmDelete">Delete</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-  </div>
-</template>
