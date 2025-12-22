@@ -1,19 +1,3 @@
-<script setup>
-import { ref, onMounted } from 'vue'
-import { useAuthStore } from '~/stores/auth'
-
-const auth = useAuthStore()
-const stats = ref({ uploads: 0, evaluations: 0, score: 0 })
-const loading = ref(true)
-
-onMounted(async () => {
-  setTimeout(() => {
-    stats.value = { uploads: 'ข้อมูลไม่พร้อมใช้งาน', evaluations: 'ข้อมูลไม่พร้อมใช้งาน', score: 'ข้อมูลไม่พร้อมใช้งาน' }
-    loading.value = false
-  }, 800)
-})
-</script>
-
 <template>
   <v-container class="py-6">
     <h2 class="text-h5 mb-4">สวัสดี {{ auth.user?.name || 'ผู้ใช้' }} 👋</h2>
@@ -40,3 +24,18 @@ onMounted(async () => {
     <v-skeleton-loader v-else type="card" class="my-6" />
   </v-container>
 </template>
+<script setup>
+import { ref, onMounted } from 'vue'
+import { useAuthStore } from '~/stores/auth'
+
+const auth = useAuthStore()
+const stats = ref({ uploads: 0, evaluations: 0, score: 0 })
+const loading = ref(true)
+
+onMounted(async () => {
+  setTimeout(() => {
+    stats.value = { uploads: 'ข้อมูลไม่พร้อมใช้งาน', evaluations: 'ข้อมูลไม่พร้อมใช้งาน', score: 'ข้อมูลไม่พร้อมใช้งาน' }
+    loading.value = false
+  }, 800)
+})
+</script>
