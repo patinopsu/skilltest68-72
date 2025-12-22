@@ -34,12 +34,15 @@
       </v-list>
     </v-navigation-drawer>
     <v-app-bar>
-      <v-app-bar-nav-icon @click="drawer = !drawer" />
+      <!-- <p></p> -->
       <v-toolbar-title class="font-semibold">ระบบประเมินบุคลากร</v-toolbar-title>
       <v-spacer />
       <v-btn icon @click="toggleTheme" :aria-label="`Switch to ${themeName === 'dark' ? 'light':'dark'} theme`">
         <v-icon>mdi-theme-light-dark</v-icon>
       </v-btn>
+      <v-app-bar-nav-icon @click="logout()">
+        <v-icon color="error">mdi-logout</v-icon>
+      </v-app-bar-nav-icon>
     </v-app-bar>
     <v-main>
       <div>
