@@ -56,11 +56,6 @@ onMounted(() => {
 watch(options, load, { deep: true })
 watch(search, () => { options.value.page = 1; load() })
 
-function logout() {
-  auth.logout()
-  router.push('/login')
-}
-
 /* ✅ เรียกตอนกดปุ่ม Delete */
 function askDelete(user) {
   selectedUser.value = user
@@ -85,7 +80,7 @@ async function confirmDelete() {
     <div class="flex items-center justify-between mb-4 gap-3">
       <div class="flex items-center gap-3">
         <v-text-field v-model="search" label="Search" density="comfortable" hide-details />
-        <v-btn color="error" @click="logout">Logout</v-btn>
+        <v-btn color="error" @click="auth.logout()">Logout</v-btn>
       </div>
     </div>
 
