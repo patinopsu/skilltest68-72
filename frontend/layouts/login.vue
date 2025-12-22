@@ -1,8 +1,8 @@
 <template>
   <v-app class="background">
     <v-main class="d-flex align-center justify-center">
-      <div class="pr-16">
-        <img width="148px" class="mx-auto d-block" src="@/assets/rms-icon.png">
+      <div class="pr-16 d-flex flex-col">
+        <img width="168px" class="mx-auto align-center pr-6" src="@/assets/rms-icon.png">
         <p class="text-h5 text-center">วิทยาลัยเทคนิคสมุทรปราการ</p>
       </div>
       <div>

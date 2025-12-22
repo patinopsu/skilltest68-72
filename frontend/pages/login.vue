@@ -3,7 +3,7 @@
   <div>
     <v-card width="320">
       <v-card-text>
-        <form class="flex flex-col gap-4" @submit.prevent="onSubmit">
+        <form class="flex flex-col" @submit.prevent="onSubmit">
           <v-text-field
                 v-model="email"
                 label="Email"
@@ -11,6 +11,7 @@
                 density="compact"
                 prepend-inner-icon="mdi-email-outline"
                 required
+                temporary
               />
               <v-text-field
                 v-model="password"
@@ -25,7 +26,7 @@
           <v-alert v-if="errorMsg" type="error" density="comfortable" variant="tonal">
             {{ errorMsg }}
           </v-alert>
-          <v-card-actions class="px-0">
+          <v-card-actions>
             <v-btn :loading="loading" color="primary" width="100%" type="submit">Sign in</v-btn>
           </v-card-actions>
         </form>
