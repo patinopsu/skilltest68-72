@@ -1,155 +1,41 @@
 <template>
-  <div class="container mx-auto px-4 py-6">
-    <div class="flex items-center justify-between mb-4 gap-3">
-      <div class="flex items-center gap-3">
-        <v-text-field v-model="search" label="Search" density="comfortable" class="max-w-full" width="220" hide-details />
-      </div>
-    </div>
-
-    <v-card>
-      <v-card-title class="text-lg">Users</v-card-title>
-      <v-card-text>
-        <v-alert
-          v-if="errorMsg"
-          type="error"
-          variant="tonal"
-          class="mb-3"
-        >
-          {{ errorMsg }}
-        </v-alert>
-
-        <v-data-table-server
-          v-model:items-per-page="options.itemsPerPage"
-          v-model:page="options.page"
-          :items-length="total"
-          :items="items"
-          :loading="loading"
-          :items-per-page-options="[10, 25, 50, 100]"
-          :headers="[
-            { title:'ID', key:'id' },
-            { title:'Name', key:'name_th' },
-            { title:'Email', key:'email' },
-            { title:'Role', key:'role' },
-            { title:'Created', key:'created_at' },
-            { title:'Actions', key:'actions', sortable: false }
-          ]"
-          :sort-by="options.sortBy"
-          @update:sort-by="(s) => options.sortBy = s"
-        >
-          <template v-slot:item.created_at="{ item }">
-            {{ formatDate(item.created_at) }}
-          </template>
-          <template #item.actions="{ item }">
-            <NuxtLink :to="`/admin/users/${item.id}`">
-              <v-btn size="small" variant="text">Edit</v-btn>
-            </NuxtLink>
-            <v-btn
-              size="small"
-              color="error"
-              variant="text"
-              @click="askDelete(item)"
-            >
-              Delete
-            </v-btn>
-            
-          </template>
-        </v-data-table-server>
-      </v-card-text>
-    </v-card>
-
-    <!-- ✅ Dialog Confirm Delete -->
-    <v-dialog v-model="confirmDialog" max-width="400">
-      <v-card>
-        <v-card-title class="text-h6">Confirm Delete</v-card-title>
-        <v-card-text>
-          Delete user <strong>#{{ selectedUser?.id }}</strong> ({{ selectedUser?.name_th }}) ?
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer />
-          <v-btn variant="text" @click="confirmDialog = false">Cancel</v-btn>
-          <v-btn color="error" variant="flat" @click="confirmDelete">Delete</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-  </div>
+  <v-container class="py-6">
+    <h2 class="text-h5 mb-4">สวัสดี {{ auth.user?.name || 'ผู้ใช้' }} 👋</h2>
+    <v-row v-if="!loading" dense>
+      <v-col cols="12" md="4">
+        <v-card variant="tonal" color="indigo">
+          <v-card-title>ไฟล์หลักฐาน</v-card-title>
+          <v-card-text class="text-h5">{{ stats.uploads }}</v-card-text>
+        </v-card>
+      </v-col>
+      <v-col cols="12" md="4">
+        <v-card variant="tonal" color="green">
+          <v-card-title>การประเมินทั้งหมด</v-card-title>
+          <v-card-text class="text-h5">{{ stats.evaluations }}</v-card-text>
+        </v-card>
+      </v-col>
+      <v-col cols="12" md="4">
+        <v-card variant="tonal" color="deep-orange">
+          <v-card-title>คะแนนเฉลี่ย</v-card-title>
+          <v-card-text class="text-h5">{{ stats.score }}</v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
+    <v-skeleton-loader v-else type="card" class="my-6" />
+  </v-container>
 </template>
 <script setup>
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useAuthStore } from '~/stores/auth'
 
-const router = useRouter()
-const { $api } = useNuxtApp()
 const auth = useAuthStore()
+const stats = ref({ uploads: 0, evaluations: 0, score: 0 })
+const loading = ref(true)
 
-const search = ref('')
-const items = ref([])
-const total = ref(0)
-const loading = ref(false)
-const errorMsg = ref('')
-const confirmDialog = ref(false)
-const selectedUser = ref(null)
-
-const options = ref({
-  page: 1,
-  itemsPerPage: 10,
-  sortBy: [{ key: 'id', order: 'desc' }]
-})
-
-// โหลดข้อมูล
-async function load() {
-  loading.value = true
-  errorMsg.value = ''
-  try {
-    const sortKey = options.value.sortBy?.[0]?.key || 'id'
-    const sortDesc = ((options.value.sortBy?.[0]?.order) || 'desc') === 'desc'
-
-    const { data } = await $api.get('/api/users/server', {
-      params: {
-        page: options.value.page,
-        itemsPerPage: options.value.itemsPerPage,
-        sortBy: sortKey,
-        sortDesc,
-        search: search.value
-      }
-    })
-    items.value = data.items
-    total.value = data.total
-  } catch (e) {
-    errorMsg.value = e.response?.data?.message || e.message || 'Load failed'
-  } finally {
+onMounted(async () => {
+  setTimeout(() => {
+    stats.value = { uploads: 'ข้อมูลไม่พร้อมใช้งาน', evaluations: 'ข้อมูลไม่พร้อมใช้งาน', score: 'ข้อมูลไม่พร้อมใช้งาน' }
     loading.value = false
-  }
-}
-
-onMounted(() => {
-  load()
+  }, 800)
 })
-watch(options, load, { deep: true })
-watch(search, () => { options.value.page = 1; load() })
-
-/* ✅ เรียกตอนกดปุ่ม Delete */
-function askDelete(user) {
-  selectedUser.value = user
-  confirmDialog.value = true
-}
-
-function formatDate(date) {
-  if (!date) return '-'
-  return new Date(date).toLocaleString('en-US', {
-    dateStyle: 'medium',
-    timeStyle: 'short',
-  })
-}
-
-/* ✅ เมื่อกดยืนยันใน dialog */
-async function confirmDelete() {
-  try {
-    await $api.delete(`/api/users/${selectedUser.value.id}`)
-    confirmDialog.value = false
-    selectedUser.value = null
-    await load()
-  } catch (e) {
-    errorMsg.value = e.response?.data?.message || e.message || 'Delete failed'
-  }
-}
 </script>
