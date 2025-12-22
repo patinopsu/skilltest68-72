@@ -2,7 +2,6 @@
   <div class="container mx-auto px-4 py-6">
     <div class="flex items-center justify-between mb-4 gap-3">
       <div class="flex items-center gap-3">
-        <v-spacer/>
         <v-text-field v-model="search" label="Search" density="comfortable" class="max-w-full" width="220" hide-details />
       </div>
     </div>
