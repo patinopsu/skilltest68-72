@@ -228,7 +228,7 @@ exports.listServer = async (req, res, next) => {
     const search = String((req.query.search || "").trim());
 
     // 2) whitelist ชื่อคอลัมน์ที่อนุญาตให้ sort (ป้องกัน SQL Injection ทาง orderBy)
-    const allowed = new Set(["id", "name_th", "email", "role", "created_at"]);
+    const allowed = new Set(["id", "name_th", "email", "role", "created_at", "department_id"]);
     const column = allowed.has(sortBy) ? sortBy : "id";
     const dir = sortDesc ? "DESC" : "ASC";
 
@@ -243,8 +243,9 @@ exports.listServer = async (req, res, next) => {
 
     // 5) ดึงแถวเฉพาะหน้าที่ต้องการ (LIMIT/OFFSET + ORDER)
     const items = await db("users")
-      .select("users.id", "users.name_th", "users.email", "roles.name_th as role", "users.created_at")
+      .select("users.id", "users.name_th", "users.email", "roles.name_th as role", "users.created_at", "departments.name_th as department_id")
       .leftJoin("roles", "users.role", "roles.id")
+      .leftJoin("departments", "users.department_id", "departments.id",)
       .whereRaw("CONCAT('users.id',' ',users.name_th,' ',users.email,' ',role) LIKE ?", [like])
       .orderBy(column, dir)
       .limit(itemsPerPage)
