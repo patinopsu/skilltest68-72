@@ -30,6 +30,7 @@
             { title:'Name', key:'name_th' },
             { title:'Email', key:'email' },
             { title:'Role', key:'role' },
+            { title:'Departments', key:'department_id' },
             { title:'Created', key:'created_at' },
             { title:'Actions', key:'actions', sortable: false }
           ]"
@@ -103,7 +104,7 @@ async function load() {
     const sortKey = options.value.sortBy?.[0]?.key || 'id'
     const sortDesc = ((options.value.sortBy?.[0]?.order) || 'desc') === 'desc'
 
-    const { data } = await $api.get('/api/users/server', {
+    const { data } = await $api.get('/api/users/sorts', {
       params: {
         page: options.value.page,
         itemsPerPage: options.value.itemsPerPage,
