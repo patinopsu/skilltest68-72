@@ -34,7 +34,9 @@ export const useAuthStore = defineStore('auth', {
         const common = useCommonStore()
         localStorage.removeItem('auth_token')
         localStorage.removeItem('auth_user')
-        common.approvedRedirect()
+        navigateTo('/login',{
+          external: true
+        })
       }
     }
   }
