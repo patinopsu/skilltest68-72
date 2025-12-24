@@ -2,7 +2,7 @@ const router = require('express').Router();
 const auth = require('../middlewares/auth');
 const ctrl = require('../controllers/users.controller');
 
-router.get('/server', auth('admin','evaluator','evaluatee'), ctrl.listServer);
+router.get('/sorts', auth('admin','evaluator','evaluatee'), ctrl.listServer);
 router.get('/',       auth('admin','evaluator','evaluatee'), ctrl.list);
 router.get('/:id',    auth('admin','evaluator','evaluatee'), ctrl.get);
 

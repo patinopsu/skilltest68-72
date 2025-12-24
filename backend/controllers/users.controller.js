@@ -212,7 +212,7 @@ exports.remove = async (req, res, next) => {
 };
 
 /**
- * GET /api/users/server
+ * GET /api/users/sorts
  * ---------------------------
  * - ตัวอย่าง Server-side Pagination + Search + Sort
  * - page, itemsPerPage, sortBy, sortDesc, search
@@ -238,7 +238,7 @@ exports.listServer = async (req, res, next) => {
 
     // 4) นับจำนวนแถวทั้งหมดที่ตรง search (ใช้ count แยก 1 คำสั่ง)
     const [{ cnt }] = await db("users")
-      .whereRaw("CONCAT(id,' ',name_th,' ',email,' ',role) LIKE ?", [like])
+      .whereRaw("CONCAT(id,' ',name_th,' ',email,' ',role, ' ',department_id) LIKE ?", [like])
       .count({ cnt: "*" });
 
     // 5) ดึงแถวเฉพาะหน้าที่ต้องการ (LIMIT/OFFSET + ORDER)
