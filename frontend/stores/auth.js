@@ -1,6 +1,6 @@
 // ~/stores/auth.js
 import { defineStore } from 'pinia'
-import { useCommonStore } from './common'
+import { useCommonStore } from '~/stores/common'
 export const useAuthStore = defineStore('auth', {
   state: () => ({
     token: null,
@@ -34,9 +34,7 @@ export const useAuthStore = defineStore('auth', {
         const common = useCommonStore()
         localStorage.removeItem('auth_token')
         localStorage.removeItem('auth_user')
-        navigateTo('/login',{
-          external: true
-        })
+        common.forceLogin()
       }
     }
   }

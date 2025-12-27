@@ -5,8 +5,13 @@ export const useCommonStore = defineStore('common', {
         const auth = useAuthStore()
         return auth.user?.role
     },
+    forceLogin() {
+      navigateTo('/login', {
+        replace: true,
+        external: true
+      })
+    },
     approvedRedirect({ hardReload = false }= {}) {
-        const router = useRouter()
         const role = this.getUserRole()
 
         if (role === 'admin') {
