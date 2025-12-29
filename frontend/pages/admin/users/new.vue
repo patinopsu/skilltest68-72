@@ -87,12 +87,14 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import axios from "axios";
+import { useAuthStore } from '~/stores/auth'
 
 const router = useRouter();
 const errorMsg = ref("");
-const showPassword = ref(false); // ✅ state สำหรับ toggle แสดง/ซ่อนรหัสผ่าน
+const showPassword = ref(false);
+const auth = useAuthStore();
 
-const token = localStorage.getItem("auth_token"); // ดูชื่อ key ให้ตรงกับที่เก็บไว้
+const token = auth.token; // ดูชื่อ key ให้ตรงกับที่เก็บไว้
 
 const vals = ref({
   name_th: "",
@@ -119,7 +121,7 @@ const handleSubmit = async () => {
         },
       }
     );
-    router.push("/");
+    router.push("/admin/users");
   } catch (e) {
     errorMsg.value = e?.response?.data?.message || e.message || "Create failed";
   }
